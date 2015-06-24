@@ -1,0 +1,56 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/myPrimaryColor</item>
+        <item name="colorPrimaryDark">@color/myPrimaryDarkColor</item>
+        <item name="colorAccent">@color/myAccentColor</item>
+        <item name="android:textColorPrimary">@color/myTextPrimaryColor</item>
+        <item name="android:textColor">@color/myTextPrimaryColor</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:windowBackground">@color/myWindowBackground</item>
+
+        <item name="android:dialogTheme">@style/MyDialogStyle</item>
+        <item name="android:alertDialogTheme">@style/MyDialogStyle</item>
+        <!--<item name="selectableItemBackground">@drawable/ripple</item>-->
+        <!--<item name="android:selectableItemBackground">@drawable/ripple</item>-->
+        <!-- for the following two, you shoud use a different ripple without mask -->
+        <!--<item name="selectableItemBackgroundBorderless">@drawable/ripple</item>-->
+        <!--<item name="android:selectableItemBackgroundBorderless">@drawable/ripple</item>-->
+        <!--<item name="android:windowActionBarOverlay">true</item>-->
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+
+    </style>
+
+
+    <style name="ToolBarStyle.Theme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    </style>
+
+    <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
+    </style>
+
+    <style name="MyDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/myPrimaryColor</item>
+        <item name="colorPrimaryDark">@color/myPrimaryDarkColor</item>
+        <item name="colorAccent">@color/myAccentColor</item>
+        <item name="android:textColorPrimary">@color/myTextPrimaryColor</item>
+        <item name="android:textColor">@color/myTextPrimaryColor</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:background">@color/myWindowBackground</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <color name="myPrimaryColor">#546E7A</color>
+    <color name="myPrimaryDarkColor">#455A64</color>
+    <color name="myPrimaryDarkColorAlpha27">#c6cbe5</color>
+    <color name="myAccentColor">#FFD740</color>
+    <color name="myAccentColorDark">#FF6F00</color>
+    <color name="myDrawerBackground">#FFFFFF</color>
+    <color name="myWindowBackground">#FFFFFF</color>
+    <color name="myWindowBackgroundGray">#eeeeee</color>
+    <color name="myTextPrimaryColor">#000000</color>
+    <color name="myNavigationColor">#000000</color>
+</resources>

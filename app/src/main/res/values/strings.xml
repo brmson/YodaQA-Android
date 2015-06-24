@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">YodaQA</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="answer_title">Answers</string>
+    <string name="sources_title">Sources</string>
+    <string name="enter_something">Enter something</string>
+</resources>
