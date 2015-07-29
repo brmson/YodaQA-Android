@@ -6,7 +6,11 @@ import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import in.vesely.eclub.yodaqa.view.MainActivity_;
 
 /**
  * Created by vesely on 6/15/15.
@@ -17,8 +21,8 @@ public class YodaAnswersResponse implements Parcelable {
     @JsonProperty("answers")
     private List<YodaAnswer> answers;
 
-    /*@JsonProperty("sources")
-    private List<YodaSource> sources;*/
+    @JsonProperty("sources")
+    private HashMap<String,YodaSource> sources;
 
     @JsonProperty("finished")
     private boolean finished;
@@ -40,13 +44,13 @@ public class YodaAnswersResponse implements Parcelable {
         this.answers = answers;
     }
 
-    /*public List<YodaSource> getSources() {
+    public HashMap<String,YodaSource> getSources() {
         return sources;
-    }*/
+    }
 
-    /*public void setSources(List<YodaSource> sources) {
+    public void setSources(HashMap<String,YodaSource> sources) {
         this.sources = sources;
-    }*/
+    }
 
     public boolean isFinished() {
         return finished;
@@ -80,7 +84,13 @@ public class YodaAnswersResponse implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedList(answers);
-        //dest.writeTypedList(sources);
+
+        dest.writeInt(sources.size());
+        for(Map.Entry<String,YodaSource> entry : sources.entrySet()){
+            dest.writeString(entry.getKey());
+            dest.writeParcelable(entry.getValue(), flags);
+        }
+
         dest.writeByte(finished ? (byte) 1 : (byte) 0);
         dest.writeInt(this.generatedSources);
         dest.writeInt(this.generatedAnswers);
@@ -88,7 +98,15 @@ public class YodaAnswersResponse implements Parcelable {
 
     protected YodaAnswersResponse(Parcel in) {
         this.answers = in.createTypedArrayList(YodaAnswer.CREATOR);
-        //this.sources = in.createTypedArrayList(YodaSource.CREATOR);
+        //this.sources = in.(YodaSource.CREATOR);
+
+        int size = in.readInt();
+        for(int i = 0; i < size; i++){
+            String key = in.readString();
+            YodaSource value = in.readParcelable(null);
+            sources.put(key,value);
+        }
+
         this.finished = in.readByte() != 0;
         this.generatedSources = in.readInt();
         this.generatedAnswers = in.readInt();
