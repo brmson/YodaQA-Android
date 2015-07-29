@@ -36,7 +36,7 @@ public class SourcesFragment extends ResponseFragment {
     protected void responseChanged(YodaAnswersResponse response) {
         adapter.clear();
         if(response!=null) {
-            adapter.addAll(response.getSources());
+            //adapter.addAll(response.getSources());
         }
     }
 

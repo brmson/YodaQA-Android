@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Created by vesely on 6/15/15.
  */
-@Rest(rootUrl = "http://live.ailao.eu/", converters = {
+@Rest(rootUrl = "http://qa.ailao.eu/", converters = {
         MappingJackson2HttpMessageConverter.class,
         FormHttpMessageConverter.class,
         StringHttpMessageConverter.class})

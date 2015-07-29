@@ -17,8 +17,8 @@ public class YodaAnswersResponse implements Parcelable {
     @JsonProperty("answers")
     private List<YodaAnswer> answers;
 
-    @JsonProperty("sources")
-    private List<YodaSource> sources;
+    /*@JsonProperty("sources")
+    private List<YodaSource> sources;*/
 
     @JsonProperty("finished")
     private boolean finished;
@@ -40,13 +40,13 @@ public class YodaAnswersResponse implements Parcelable {
         this.answers = answers;
     }
 
-    public List<YodaSource> getSources() {
+    /*public List<YodaSource> getSources() {
         return sources;
-    }
+    }*/
 
-    public void setSources(List<YodaSource> sources) {
+    /*public void setSources(List<YodaSource> sources) {
         this.sources = sources;
-    }
+    }*/
 
     public boolean isFinished() {
         return finished;
@@ -80,7 +80,7 @@ public class YodaAnswersResponse implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedList(answers);
-        dest.writeTypedList(sources);
+        //dest.writeTypedList(sources);
         dest.writeByte(finished ? (byte) 1 : (byte) 0);
         dest.writeInt(this.generatedSources);
         dest.writeInt(this.generatedAnswers);
@@ -88,7 +88,7 @@ public class YodaAnswersResponse implements Parcelable {
 
     protected YodaAnswersResponse(Parcel in) {
         this.answers = in.createTypedArrayList(YodaAnswer.CREATOR);
-        this.sources = in.createTypedArrayList(YodaSource.CREATOR);
+        //this.sources = in.createTypedArrayList(YodaSource.CREATOR);
         this.finished = in.readByte() != 0;
         this.generatedSources = in.readInt();
         this.generatedAnswers = in.readInt();

@@ -31,11 +31,18 @@ public class YodaExecuter extends AsyncTask<String, YodaAnswersResponse, YodaAns
 
     @Override
     protected YodaAnswersResponse doInBackground(String... params) {
+        android.os.Debug.waitForDebugger(); //DELETE ME
         try {
             YodaUtils.setContentType(restClient);
             String id = ids.get(params[0]);
             if (id == null) {
-                id = restClient.getId(YodaUtils.getQuestionPostData(params[0]));
+                String yodaPostAnswer= restClient.getId(YodaUtils.getQuestionPostData(params[0]));
+                yodaPostAnswer = yodaPostAnswer.replace("{", "");
+                yodaPostAnswer = yodaPostAnswer.replace("}", "");
+                yodaPostAnswer = yodaPostAnswer.replace("\"", "");
+                String delims = "[:]";
+                String[] split = yodaPostAnswer.split(delims);
+                id=split[1];
                 ids.put(params[0], id);
             }
             YodaAnswersResponse response = null;
