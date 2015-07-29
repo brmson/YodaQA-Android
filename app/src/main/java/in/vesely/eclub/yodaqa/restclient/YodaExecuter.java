@@ -1,6 +1,7 @@
 package in.vesely.eclub.yodaqa.restclient;
 
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import org.springframework.core.NestedRuntimeException;
 
@@ -31,7 +32,6 @@ public class YodaExecuter extends AsyncTask<String, YodaAnswersResponse, YodaAns
 
     @Override
     protected YodaAnswersResponse doInBackground(String... params) {
-        android.os.Debug.waitForDebugger(); //DELETE ME
         try {
             YodaUtils.setContentType(restClient);
             String id = ids.get(params[0]);

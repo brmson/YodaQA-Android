@@ -27,10 +27,10 @@ public class AnswerItem extends BindableLinearLayout<YodaAnswer> {
     @ViewById(R.id.confidence)
     protected TextView confidence;
 
-    @ColorRes(R.color.myAccentColorDark)
+    @ColorRes(R.color.green)
     protected int accDarkColor;
 
-    @ColorRes(R.color.myAccentColor)
+    @ColorRes(R.color.red)
     protected int accColor;
 
     public AnswerItem(Context context) {

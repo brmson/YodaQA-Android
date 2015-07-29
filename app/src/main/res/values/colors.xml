@@ -4,4 +4,6 @@
     <color name="black87">#de000000</color>
     <color name="black14">#24000000</color>
     <color name="black27">#45000000</color>
+    <color name="green">#007F00</color>
+    <color name="red">#E23636</color>
 </resources>
