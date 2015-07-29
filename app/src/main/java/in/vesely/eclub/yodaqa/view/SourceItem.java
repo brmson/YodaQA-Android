@@ -32,7 +32,7 @@ public class SourceItem extends BindableLinearLayout<YodaSource> {
 
     @Override
     public void bind(YodaSource data, int position) {
-        String url = String.format("http://en.wikipedia.org/?curid=%s", data.getPageId());
+        String url = data.getURL();
         text.setText(Html.fromHtml(String.format("<a href=\"%s\">%s (%s)</a>", url, data.getTitle(), data.getOrigin())));
         text.setMovementMethod(LinkMovementMethod.getInstance());
         text.setCompoundDrawablesWithIntrinsicBounds(wikiLogoDrawable, null, null, null);

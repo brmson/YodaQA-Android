@@ -15,8 +15,8 @@ public class YodaSource implements Parcelable {
     @JsonProperty("origin")
     private String origin;
 
-    @JsonProperty("pageId")
-    private long pageId;
+    @JsonProperty("URL")
+    private String URL;
 
     @JsonProperty("isConcept")
     private boolean isConcept;
@@ -38,12 +38,12 @@ public class YodaSource implements Parcelable {
         this.origin = origin;
     }
 
-    public long getPageId() {
-        return pageId;
+    public String getURL() {
+        return URL;
     }
 
-    public void setPageId(long pageId) {
-        this.pageId = pageId;
+    public void setURL(String URL) {
+        this.URL = URL;
     }
 
     public boolean isConcept() {
@@ -87,7 +87,7 @@ public class YodaSource implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.origin);
-        dest.writeLong(this.pageId);
+        dest.writeString(this.URL);
         dest.writeByte(isConcept ? (byte) 1 : (byte) 0);
         dest.writeString(this.type);
         dest.writeString(this.title);
@@ -99,7 +99,7 @@ public class YodaSource implements Parcelable {
 
     protected YodaSource(Parcel in) {
         this.origin = in.readString();
-        this.pageId = in.readLong();
+        this.URL = in.readString();
         this.isConcept = in.readByte() != 0;
         this.type = in.readString();
         this.title = in.readString();
