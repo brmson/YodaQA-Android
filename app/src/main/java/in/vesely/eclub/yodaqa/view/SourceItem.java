@@ -23,8 +23,17 @@ public class SourceItem extends BindableLinearLayout<YodaSource> {
     @ViewById(R.id.text)
     protected TextView text;
 
-    @DrawableRes(R.drawable.ic_wikipedia_w_logo)
+    @DrawableRes(R.drawable.ic_wikipedia_logo)
     protected Drawable wikiLogoDrawable;
+
+    @DrawableRes(R.drawable.ic_bing_logo)
+    protected Drawable bingLogoDrawable;
+
+    @DrawableRes(R.drawable.ic_freebase_logo)
+    protected Drawable freebaseLogoDrawable;
+
+    @DrawableRes(R.drawable.ic_dbpedia_logo)
+    protected Drawable dbpediaLogoDrawable;
 
     public SourceItem(Context context) {
         super(context);
@@ -35,6 +44,23 @@ public class SourceItem extends BindableLinearLayout<YodaSource> {
         String url = data.getURL();
         text.setText(Html.fromHtml(String.format("<a href=\"%s\">%s (%s)</a>", url, data.getTitle(), data.getOrigin())));
         text.setMovementMethod(LinkMovementMethod.getInstance());
-        text.setCompoundDrawablesWithIntrinsicBounds(wikiLogoDrawable, null, null, null);
+        setIcon(data.getType());
+    }
+
+    private void setIcon(String sourceType){
+        switch (sourceType){
+            case "enwiki":
+                text.setCompoundDrawablesWithIntrinsicBounds(wikiLogoDrawable, null, null, null);
+                break;
+            case "bing":
+                text.setCompoundDrawablesWithIntrinsicBounds(bingLogoDrawable, null, null, null);
+                break;
+            case "freebase":
+                text.setCompoundDrawablesWithIntrinsicBounds(freebaseLogoDrawable, null, null, null);
+                break;
+            case "dbpedia":
+                text.setCompoundDrawablesWithIntrinsicBounds(dbpediaLogoDrawable, null, null, null);
+                break;
+        }
     }
 }
