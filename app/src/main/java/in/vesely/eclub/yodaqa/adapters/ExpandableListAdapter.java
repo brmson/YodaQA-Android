@@ -33,11 +33,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     public ExpandableListAdapter(Activity context, List<YodaAnswer> groups,
                                  Map<YodaAnswer, List<String>> expendableListContent) {
-        if (groups==null){
-            groups=new ArrayList<>();
+        if (groups == null) {
+            groups = new ArrayList<>();
         }
-        if(expendableListContent==null){
-            expendableListContent=new HashMap<>();
+        if (expendableListContent == null) {
+            expendableListContent = new HashMap<>();
         }
         this.context = context;
         this.expendableListContent = expendableListContent;
@@ -64,7 +64,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView item = (TextView) convertView.findViewById(R.id.snippetText);
 
-        item.setText(Html.fromHtml(child));
+        if (child != null) {
+            item.setText(Html.fromHtml(child));
+        } else {
+            item.setText("");
+        }
         return convertView;
     }
 
@@ -98,13 +102,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         text.setTypeface(null, Typeface.BOLD);
         text.setText(yodaAnswer.getText());
 
-        TextView confidence= (TextView) convertView.findViewById(R.id.confidence);
+        TextView confidence = (TextView) convertView.findViewById(R.id.confidence);
         confidence.setText(String.format("%3.1f %%", yodaAnswer.getConfidence() * 100));
-        int color=ColorUtils.interpolate(context.getResources().getColor(R.color.red),
+        int color = ColorUtils.interpolate(context.getResources().getColor(R.color.red),
                 context.getResources().getColor(R.color.green), (float) yodaAnswer.getConfidence());
         confidence.setTextColor(color);
 
-        ProgressBar progressBar=(ProgressBar) convertView.findViewById(R.id.progressBar);
+        ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
         progressBar.setProgress((int) (yodaAnswer.getConfidence() * 100));
         progressBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
@@ -120,24 +124,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
 
-    public void addAll(List<YodaAnswer> answers, HashMap<String,YodaSnippet> snippets){
-        for (YodaAnswer yodaAnswer:answers) {
+    public void addAll(List<YodaAnswer> answers, HashMap<String, YodaSnippet> snippets) {
+        for (YodaAnswer yodaAnswer : answers) {
             groups.add(yodaAnswer);
-            ArrayList snippetsToShow=createSnippets(yodaAnswer,snippets);
-            expendableListContent.put(yodaAnswer,snippetsToShow);
+            ArrayList snippetsToShow = createSnippets(yodaAnswer, snippets);
+            expendableListContent.put(yodaAnswer, snippetsToShow);
         }
         this.notifyDataSetChanged();
         this.notifyDataSetInvalidated();
     }
 
-    private ArrayList createSnippets(YodaAnswer answer,HashMap<String,YodaSnippet> snippets){
-        ArrayList snippetTexts=new ArrayList();
-        int snippetIDs[]=answer.getSnippetIDs();
-        for (int snippetId:snippetIDs
-             ) {
-            String passageText=(snippets.get(String.valueOf(snippetId))).getPassageText();
+    private ArrayList createSnippets(YodaAnswer answer, HashMap<String, YodaSnippet> snippets) {
+        ArrayList snippetTexts = new ArrayList();
+        int snippetIDs[] = answer.getSnippetIDs();
+        for (int snippetId : snippetIDs
+                ) {
+            String passageText = (snippets.get(String.valueOf(snippetId))).getPassageText();
 
-            if (passageText!=null) {
+            if (passageText != null) {
                 passageText = passageText.replaceAll(answer.getText(), "<font color='green'>" + answer.getText() + "</font>");
             }
             snippetTexts.add(passageText);
@@ -145,7 +149,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return snippetTexts;
     }
 
-    public void clear(){
+    public void clear() {
         groups.clear();
         expendableListContent.clear();
         this.notifyDataSetChanged();
