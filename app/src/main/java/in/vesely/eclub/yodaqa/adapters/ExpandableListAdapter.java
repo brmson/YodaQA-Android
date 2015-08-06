@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView item = (TextView) convertView.findViewById(R.id.snippetText);
 
-        item.setText(child);
+        item.setText(Html.fromHtml(child));
         return convertView;
     }
 
@@ -134,7 +135,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         int snippetIDs[]=answer.getSnippetIDs();
         for (int snippetId:snippetIDs
              ) {
-            snippetTexts.add((snippets.get(String.valueOf(snippetId))).getPassageText());
+            String passageText=(snippets.get(String.valueOf(snippetId))).getPassageText();
+
+            if (passageText!=null) {
+                passageText = passageText.replaceAll(answer.getText(), "<font color='green'>" + answer.getText() + "</font>");
+            }
+            snippetTexts.add(passageText);
         }
         return snippetTexts;
     }
