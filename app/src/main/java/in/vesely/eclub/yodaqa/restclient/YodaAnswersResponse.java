@@ -24,6 +24,9 @@ public class YodaAnswersResponse implements Parcelable {
     @JsonProperty("sources")
     private HashMap<String,YodaSource> sources;
 
+    @JsonProperty("snippets")
+    private HashMap<String,YodaSnippet>snippets;
+
     @JsonProperty("finished")
     private boolean finished;
 
@@ -76,6 +79,10 @@ public class YodaAnswersResponse implements Parcelable {
         this.generatedAnswers = generatedAnswers;
     }
 
+    public HashMap<String, YodaSnippet> getSnippets() {
+        return snippets;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -89,6 +96,12 @@ public class YodaAnswersResponse implements Parcelable {
         for(Map.Entry<String,YodaSource> entry : sources.entrySet()){
             dest.writeString(entry.getKey());
             dest.writeParcelable(entry.getValue(), flags);
+        }
+
+        dest.writeInt(snippets.size());
+        for(Map.Entry<String,YodaSnippet> entry:snippets.entrySet()){
+            dest.writeString(entry.getKey());
+            dest.writeParcelable(entry.getValue(),flags);
         }
 
         dest.writeByte(finished ? (byte) 1 : (byte) 0);
@@ -105,6 +118,13 @@ public class YodaAnswersResponse implements Parcelable {
             String key = in.readString();
             YodaSource value = in.readParcelable(null);
             sources.put(key,value);
+        }
+
+        size=in.readInt();
+        for(int i=0; i<size; i++){
+            String key= in.readString();
+            YodaSnippet value=in.readParcelable(null);
+            snippets.put(key,value);
         }
 
         this.finished = in.readByte() != 0;

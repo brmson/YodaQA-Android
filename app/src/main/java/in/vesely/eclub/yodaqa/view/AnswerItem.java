@@ -21,9 +21,6 @@ public class AnswerItem extends BindableLinearLayout<YodaAnswer> {
     @ViewById(R.id.text)
     protected TextView text;
 
-    @ViewById(R.id.position)
-    protected TextView position;
-
     @ViewById(R.id.confidence)
     protected TextView confidence;
 
@@ -40,7 +37,6 @@ public class AnswerItem extends BindableLinearLayout<YodaAnswer> {
     @Override
     public void bind(YodaAnswer data, int pos) {
         text.setText(data.getText());
-        position.setText(String.format("%2d.", pos + 1));
         confidence.setText(String.format("%3.1f %%", data.getConfidence() * 100));
         confidence.setTextColor(ColorUtils.interpolate(accColor, accDarkColor, (float) data.getConfidence()));
     }

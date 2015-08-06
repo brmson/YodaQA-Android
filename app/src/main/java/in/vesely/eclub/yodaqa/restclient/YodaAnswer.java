@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 /**
  * Created by vesely on 6/15/15.
  */
@@ -18,6 +20,9 @@ public class YodaAnswer implements Parcelable {
     @JsonProperty("confidence")
     private double confidence;
 
+    @JsonProperty("snippetIDs")
+    private int[] snippetIDs;
+
     public String getText() {
         return text;
     }
@@ -28,6 +33,10 @@ public class YodaAnswer implements Parcelable {
 
     public double getConfidence() {
         return confidence;
+    }
+
+    public int[] getSnippetIDs() {
+        return snippetIDs;
     }
 
     public void setConfidence(double confidence) {
@@ -43,6 +52,7 @@ public class YodaAnswer implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.text);
         dest.writeDouble(this.confidence);
+        dest.writeIntArray(this.snippetIDs);
     }
 
     public YodaAnswer() {
@@ -56,6 +66,7 @@ public class YodaAnswer implements Parcelable {
     protected YodaAnswer(Parcel in) {
         this.text = in.readString();
         this.confidence = in.readDouble();
+        this.snippetIDs=in.createIntArray();
     }
 
     public static final Parcelable.Creator<YodaAnswer> CREATOR = new Parcelable.Creator<YodaAnswer>() {

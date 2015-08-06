@@ -8,6 +8,8 @@ import android.speech.RecognizerIntent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.widget.ExpandableListView;
 
 import com.quinny898.library.persistentsearch.SearchBox;
 import com.quinny898.library.persistentsearch.SearchResult;
@@ -27,11 +29,13 @@ import org.springframework.http.client.OkHttpClientHttpRequestFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import in.vesely.eclub.yodaqa.R;
+import in.vesely.eclub.yodaqa.adapters.ExpandableListAdapter;
 import in.vesely.eclub.yodaqa.adapters.ResponseFragmentTabAdapter;
 import in.vesely.eclub.yodaqa.bus.OttoBus;
 import in.vesely.eclub.yodaqa.bus.RequestUpdateAction;
