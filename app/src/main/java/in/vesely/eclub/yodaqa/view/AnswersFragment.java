@@ -50,7 +50,7 @@ public class AnswersFragment extends ResponseFragment {
     protected void responseChanged(YodaAnswersResponse response) {
         expandableListAdapter.clear();
         if (response != null) {
-            expandableListAdapter.addAll(response.getAnswers(), response.getSnippets());
+            expandableListAdapter.addAll(response.getAnswers(), response.getSnippets(), response.getSources());
         }
     }
 
