@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 
 
 import java.util.ArrayList;
@@ -71,21 +71,29 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView text = (TextView) convertView.findViewById(R.id.snippetText);
         text.setText(snippetSourceContainer.getYodaSnippet().getPassageText());
+        if (snippetSourceContainer.getYodaSnippet().getPropertyLabel() != null) {
+            text.append(snippetSourceContainer.getYodaSnippet().getPropertyLabel());
+        }
+
+        TextView name = (TextView) convertView.findViewById(R.id.snippetName);
+        name.setText(Html.fromHtml("<b>" + snippetSourceContainer.getYodaSource().getTitle() + "</b>"));
+
+        name.append(" (" + snippetSourceContainer.getYodaSource().getOrigin() + ")");
 
         ImageButton imageButton = (ImageButton) convertView.findViewById(R.id.snippetSourceButton);
         setImageButtonImage(imageButton, snippetSourceContainer.getYodaSource().getType());
-        setOnClickButtonImage(imageButton,snippetSourceContainer.getYodaSource().getURL());
+        setOnClickButtonImage(imageButton, snippetSourceContainer.getYodaSource().getURL());
         return convertView;
     }
 
-    private void setImageButtonImage(ImageButton imageButton, String type){
-        switch(type){
+    private void setImageButtonImage(ImageButton imageButton, String type) {
+        switch (type) {
             case "enwiki":
                 imageButton.setImageResource(R.drawable.ic_wikipedia_logo);
                 break;
             case "freebase":
                 imageButton.setImageResource(R.drawable.ic_freebase_logo);
-               break;
+                break;
             case "dbpedia":
                 imageButton.setImageResource(R.drawable.ic_dbpedia_logo);
                 break;
@@ -95,18 +103,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
     }
 
-    private void setOnClickButtonImage(ImageButton imageButton, final String url){
+    private void setOnClickButtonImage(ImageButton imageButton, final String url) {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               goToUrl(url);
+                goToUrl(url);
             }
         });
     }
 
-    private void goToUrl(String url){
-        Uri uriUrl =Uri.parse(url);
-        Intent launchBrowser = new Intent(Intent.ACTION_VIEW,uriUrl);
+    private void goToUrl(String url) {
+        Uri uriUrl = Uri.parse(url);
+        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
         context.startActivity(launchBrowser);
     }
 
@@ -163,7 +171,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
 
     public void addAll(List<YodaAnswer> answers, HashMap<String, YodaSnippet> snippets,
-                       HashMap<String,YodaSource> sources) {
+                       HashMap<String, YodaSource> sources) {
         for (YodaAnswer yodaAnswer : answers) {
             groups.add(yodaAnswer);
             ArrayList snippetsToShow = createSnippets(yodaAnswer, snippets, sources);
@@ -174,15 +182,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     private ArrayList createSnippets(YodaAnswer answer, HashMap<String, YodaSnippet> snippets,
-                                     HashMap<String,YodaSource> sources) {
+                                     HashMap<String, YodaSource> sources) {
         ArrayList snippetTexts = new ArrayList();
         int snippetIDs[] = answer.getSnippetIDs();
         for (int snippetId : snippetIDs
                 ) {
             YodaSnippet snippet = (snippets.get(String.valueOf(snippetId)));
-            int sourceID=snippet.getSourceID();
+            int sourceID = snippet.getSourceID();
             YodaSource source = sources.get(String.valueOf(sourceID));
-            snippetTexts.add(new SnippetSourceContainer(snippet,source));
+            snippetTexts.add(new SnippetSourceContainer(snippet, source));
         }
         return snippetTexts;
     }

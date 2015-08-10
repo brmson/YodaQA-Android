@@ -22,6 +22,9 @@ public class YodaSnippet implements Parcelable{
     @JsonProperty("sourceID")
     private int sourceID;
 
+    @JsonProperty("propertyLabel")
+    private String propertyLabel;
+
     @Override
     public int describeContents() {
         return 0;
@@ -39,25 +42,32 @@ public class YodaSnippet implements Parcelable{
         return sourceID;
     }
 
+    public String getPropertyLabel() {
+        return propertyLabel;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.passageText);
         dest.writeInt(this.snippetID);
         dest.writeInt(this.sourceID);
+        dest.writeString(this.propertyLabel);
     }
 
     public YodaSnippet(){};
 
-    public YodaSnippet(String passageText, int snippetID, int sourceID){
+    public YodaSnippet(String passageText, int snippetID, int sourceID, String propertyLabel){
         this.passageText=passageText;
         this.snippetID=snippetID;
         this.sourceID=sourceID;
+        this.propertyLabel=propertyLabel;
     }
 
     protected YodaSnippet(Parcel in) {
         this.passageText = in.readString();
         this.snippetID = in.readInt();
         this.sourceID = in.readInt();
+        this.propertyLabel= in.readString();
     }
 
     public static final Parcelable.Creator<YodaSnippet> CREATOR = new Parcelable.Creator<YodaSnippet>() {
