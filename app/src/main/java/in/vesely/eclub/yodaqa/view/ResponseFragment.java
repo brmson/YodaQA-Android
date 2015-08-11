@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
+import android.view.View;
+import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
@@ -60,6 +62,11 @@ public abstract class ResponseFragment extends Fragment {
         responseChanged(response);
         if (refreshLayout != null && response != null) {
             refreshLayout.setRefreshing(!response.isFinished());
+        }
+        if (action.getResponse() == null) {
+            if (refreshLayout != null) {
+                refreshLayout.setRefreshing(false);
+            }
         }
     }
 

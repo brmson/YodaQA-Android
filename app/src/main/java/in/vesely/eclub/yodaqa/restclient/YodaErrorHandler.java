@@ -31,7 +31,7 @@ public class YodaErrorHandler implements RestErrorHandler {
         mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_LONG).show();
                 bus.post(new ResponseChangedAction(null));
             }
         });

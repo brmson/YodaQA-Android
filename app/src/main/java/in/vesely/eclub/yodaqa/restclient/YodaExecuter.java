@@ -1,8 +1,6 @@
 package in.vesely.eclub.yodaqa.restclient;
 
 import android.os.AsyncTask;
-import android.os.Debug;
-import android.widget.Toast;
 
 import org.springframework.core.NestedRuntimeException;
 

@@ -1,13 +1,19 @@
 package in.vesely.eclub.yodaqa.view;
 
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
+
+import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -20,6 +26,8 @@ import java.util.Map;
 import in.vesely.eclub.yodaqa.R;
 import in.vesely.eclub.yodaqa.adapters.ExpandableListAdapter;
 import in.vesely.eclub.yodaqa.adapters.ListRecyclerViewAdapter;
+import in.vesely.eclub.yodaqa.bus.OttoBus;
+import in.vesely.eclub.yodaqa.bus.ResponseChangedAction;
 import in.vesely.eclub.yodaqa.restclient.YodaAnswer;
 import in.vesely.eclub.yodaqa.restclient.YodaAnswersResponse;
 import in.vesely.eclub.yodaqa.restclient.YodaSnippet;
@@ -37,14 +45,17 @@ public class AnswersFragment extends ResponseFragment {
         }
     };
 
+
     @ViewById(R.id.Expandable_list)
     protected ExpandableListView expListView;
+
 
     private ExpandableListAdapter expandableListAdapter;
 
     public AnswersFragment() {
 
     }
+
 
     @Override
     protected void responseChanged(YodaAnswersResponse response) {

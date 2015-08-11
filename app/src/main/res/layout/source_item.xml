@@ -10,7 +10,6 @@
         android:gravity="center_vertical"
         android:textColor="@color/black87"
         android:textSize="16sp"
-        android:lines="1"
         android:scrollHorizontally="false"
         android:ellipsize="end"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
