@@ -8,6 +8,10 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+
 import in.vesely.eclub.yodaqa.R;
 import in.vesely.eclub.yodaqa.adapters.ListRecyclerViewAdapter;
 import in.vesely.eclub.yodaqa.restclient.YodaAnswersResponse;
@@ -36,7 +40,13 @@ public class SourcesFragment extends ResponseFragment {
     protected void responseChanged(YodaAnswersResponse response) {
         adapter.clear();
         if(response!=null) {
-            adapter.addAll(response.getSources().values());
+            ArrayList<YodaSource> yodaSources= new ArrayList<>(response.getSources().values());
+            for(int i=0;i<yodaSources.size();i++){
+                YodaSource yodaSource=yodaSources.get(i);
+                if (!yodaSource.getOrigin().equals("title-in-clue")){
+                    adapter.add(yodaSource);
+                }
+            }
         }
     }
 
