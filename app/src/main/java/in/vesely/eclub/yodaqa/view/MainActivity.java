@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import in.vesely.eclub.yodaqa.R;
@@ -77,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
 
     private final Object lock = new Object();
 
+    TextToSpeech t1;
+
     @NonConfigurationInstance
     protected YodaExecuter executer;
     private DBHelper dbHelper;
@@ -87,12 +91,28 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
         super.onCreate(savedInstanceState);
         bus.register(this);
         dbHelper = new DBHelper(this);
+        t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    t1.setLanguage(Locale.US);
+                }
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         bus.unregister(this);
+    }
+
+    public void onPause(){
+        if(t1 !=null){
+            t1.stop();
+            t1.shutdown();
+        }
+        super.onPause();
     }
 
     @AfterViews
@@ -142,6 +162,9 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
     @Subscribe
     public void onResponseChanged(ResponseChangedAction action) {
         response = action.getResponse();
+        if (response!=null && response.isFinished()){
+            t1.speak(response.getAnswers().get(0).getText(),TextToSpeech.QUEUE_FLUSH,null);
+        }
     }
 
     @Override

@@ -2,6 +2,7 @@ package in.vesely.eclub.yodaqa.view;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import in.vesely.eclub.yodaqa.R;
@@ -35,6 +37,8 @@ import in.vesely.eclub.yodaqa.restclient.YodaSnippet;
 
 @EFragment(R.layout.fragment_answers)
 public class AnswersFragment extends ResponseFragment {
+
+
 
     @ViewById(R.id.recyclerView)
     protected RecyclerView recyclerView;
@@ -53,7 +57,6 @@ public class AnswersFragment extends ResponseFragment {
     private ExpandableListAdapter expandableListAdapter;
 
     public AnswersFragment() {
-
     }
 
 
