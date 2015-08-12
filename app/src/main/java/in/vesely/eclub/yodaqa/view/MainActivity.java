@@ -91,14 +91,13 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
         super.onCreate(savedInstanceState);
         bus.register(this);
         dbHelper = new DBHelper(this);
-        t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
-                    t1.setLanguage(Locale.US);
-                }
-            }
-        });
+        initTextToSpeech();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initTextToSpeech();
     }
 
     @Override
@@ -107,12 +106,23 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
         bus.unregister(this);
     }
 
-    public void onPause(){
-        if(t1 !=null){
+    public void onPause() {
+        if (t1 != null) {
             t1.stop();
             t1.shutdown();
         }
         super.onPause();
+    }
+
+    private void initTextToSpeech() {
+        t1 = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    t1.setLanguage(Locale.UK);
+                }
+            }
+        });
     }
 
     @AfterViews
@@ -162,8 +172,8 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
     @Subscribe
     public void onResponseChanged(ResponseChangedAction action) {
         response = action.getResponse();
-        if (response!=null && response.isFinished()){
-            t1.speak(response.getAnswers().get(0).getText(),TextToSpeech.QUEUE_FLUSH,null);
+        if (response != null && response.isFinished()) {
+            t1.speak(response.getAnswers().get(0).getText(), TextToSpeech.QUEUE_FLUSH, null);
         }
     }
 
