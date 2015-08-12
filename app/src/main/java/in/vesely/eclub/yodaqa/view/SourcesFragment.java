@@ -41,12 +41,28 @@ public class SourcesFragment extends ResponseFragment {
         adapter.clear();
         if(response!=null) {
             ArrayList<YodaSource> yodaSources= new ArrayList<>(response.getSources().values());
+            ArrayList<YodaSource> arrayListSources=new ArrayList<>();
             for(int i=0;i<yodaSources.size();i++){
+                boolean founded=false;
                 YodaSource yodaSource=yodaSources.get(i);
                 if (!yodaSource.getOrigin().equals("title-in-clue")){
-                    adapter.add(yodaSource);
+                    String title=yodaSource.getTitle();
+                    String type=yodaSource.getType();
+                    String origin=yodaSource.getOrigin();
+                    for (int j=0;j<arrayListSources.size();j++){
+                        YodaSource s=arrayListSources.get(j);
+                        if(s.getTitle().equals(title) && s.getType().equals(type)){
+                            s.setOrigin(s.getOrigin() + ", " + origin);
+                            founded=true;
+                            break;
+                        }
+                    }
+                    if(!founded){
+                        arrayListSources.add(yodaSource);
+                    }
                 }
             }
+            adapter.addAll(arrayListSources);
         }
     }
 
