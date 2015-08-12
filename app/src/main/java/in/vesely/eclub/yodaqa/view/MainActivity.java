@@ -1,15 +1,19 @@
 package in.vesely.eclub.yodaqa.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ExpandableListView;
 
 import com.quinny898.library.persistentsearch.SearchBox;
@@ -81,6 +85,10 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
 
     TextToSpeech t1;
 
+    private int group1Id = 1;
+
+    private int settingsId = Menu.FIRST;
+
     @NonConfigurationInstance
     protected YodaExecuter executer;
     private DBHelper dbHelper;
@@ -89,15 +97,18 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         bus.register(this);
         dbHelper = new DBHelper(this);
         initTextToSpeech();
+        setEndpoint();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         initTextToSpeech();
+        setEndpoint();
     }
 
     @Override
@@ -123,6 +134,16 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
                 }
             }
         });
+    }
+
+    private void setEndpoint(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String settedEndpoint = sharedPref.getString("endpoint", "");
+        if (settedEndpoint.equals("Movies")){
+            restClient.setRootUrl("http://qa.ailao.eu:4000/");
+        }else{
+            restClient.setRootUrl("http://qa.ailao.eu/");
+        }
     }
 
     @AfterViews
@@ -265,5 +286,33 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
             executer = new YodaExecuter(bus, restClient, ids);
             executer.execute(term);
         }
+    }
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        menu.add(group1Id, settingsId, settingsId, R.string.settings);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case 1:
+                Intent intent=new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+
+            default:
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

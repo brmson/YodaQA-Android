@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+        <ListPreference
+            android:title="@string/domain"
+            android:defaultValue="@string/pref_endpoint_default"
+            android:key="endpoint"
+            android:entries="@array/endpointArray"
+            android:entryValues="@array/endpointValues" />
+</PreferenceScreen>

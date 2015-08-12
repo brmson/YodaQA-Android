@@ -20,6 +20,8 @@ import org.springframework.web.client.RestTemplate;
         MappingJackson2HttpMessageConverter.class,
         FormHttpMessageConverter.class,
         StringHttpMessageConverter.class})
+
+
 public interface YodaRestClient extends RestClientErrorHandling {
 
     @Get("/q/{id}")
@@ -32,5 +34,6 @@ public interface YodaRestClient extends RestClientErrorHandling {
 
     void setHeader(String name, String value);
     public RestTemplate getRestTemplate();
+    void setRootUrl(String rootUrl);
 }
 

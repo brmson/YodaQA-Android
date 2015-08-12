@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="endpointArray">
+        <item>Live</item>
+        <item>Movies</item>
+    </string-array>
+
+    <string-array name="endpointValues">
+        <item>Live</item>
+        <item>Movies</item>
+    </string-array>
+
+</resources>
