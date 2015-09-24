@@ -59,7 +59,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
     compile 'com.quinny898.library.persistentsearch:library:1.0.0-SNAPSHOT'
-    compile files('libs/otto-2.0.0-SNAPSHOT.jar')
+    compile 'com.squareup:otto:1.3.8'
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.BUILD-SNAPSHOT'
