@@ -157,6 +157,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
 
         if (yodaAnswer instanceof YodaAnswerItem) {
+            text.setMaxLines(1);
             YodaAnswerItem ya = (YodaAnswerItem) yodaAnswer;
             confidence.setText(String.format("%3.1f %%", ya.getConfidence() * 100));
             int color = ColorUtils.interpolate(context.getResources().getColor(R.color.red),
@@ -168,6 +169,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             progressBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
             progressBar.setVisibility(View.VISIBLE);
         } else {
+            text.setMaxLines(5);
             confidence.setVisibility(View.INVISIBLE);
             progressBar.setVisibility(View.INVISIBLE);
         }
