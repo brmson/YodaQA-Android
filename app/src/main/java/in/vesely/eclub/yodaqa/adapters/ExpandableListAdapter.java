@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +24,7 @@ import java.util.Map;
 import in.vesely.eclub.yodaqa.R;
 import in.vesely.eclub.yodaqa.SnippetSourceContainer;
 import in.vesely.eclub.yodaqa.restclient.YodaAnswer;
+import in.vesely.eclub.yodaqa.restclient.YodaAnswerItem;
 import in.vesely.eclub.yodaqa.restclient.YodaSnippet;
 import in.vesely.eclub.yodaqa.restclient.YodaSource;
 import in.vesely.eclub.yodaqa.utils.ColorUtils;
@@ -148,16 +149,28 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         text.setTypeface(null, Typeface.BOLD);
         text.setText(yodaAnswer.getText());
 
+        ImageView indicator = (ImageView) convertView.findViewById(R.id.indicator);
+        indicator.setVisibility(getChildrenCount(groupPosition) == 0 ? View.INVISIBLE : View.VISIBLE);
+        indicator.setRotation(isExpanded ? 180 : 0);
+
         TextView confidence = (TextView) convertView.findViewById(R.id.confidence);
-        confidence.setText(String.format("%3.1f %%", yodaAnswer.getConfidence() * 100));
-        int color = ColorUtils.interpolate(context.getResources().getColor(R.color.red),
-                context.getResources().getColor(R.color.green), (float) yodaAnswer.getConfidence());
-        confidence.setTextColor(color);
-
         ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
-        progressBar.setProgress((int) (yodaAnswer.getConfidence() * 100));
-        progressBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
+        if (yodaAnswer instanceof YodaAnswerItem) {
+            YodaAnswerItem ya = (YodaAnswerItem) yodaAnswer;
+            confidence.setText(String.format("%3.1f %%", ya.getConfidence() * 100));
+            int color = ColorUtils.interpolate(context.getResources().getColor(R.color.red),
+                    context.getResources().getColor(R.color.green), (float) ya.getConfidence());
+            confidence.setTextColor(color);
+            confidence.setVisibility(View.VISIBLE);
+
+            progressBar.setProgress((int) (ya.getConfidence() * 100));
+            progressBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            confidence.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
+        }
         return convertView;
     }
 
@@ -184,13 +197,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private ArrayList createSnippets(YodaAnswer answer, HashMap<String, YodaSnippet> snippets,
                                      HashMap<String, YodaSource> sources) {
         ArrayList snippetTexts = new ArrayList();
-        int snippetIDs[] = answer.getSnippetIDs();
-        for (int snippetId : snippetIDs
-                ) {
-            YodaSnippet snippet = (snippets.get(String.valueOf(snippetId)));
-            int sourceID = snippet.getSourceID();
-            YodaSource source = sources.get(String.valueOf(sourceID));
-            snippetTexts.add(new SnippetSourceContainer(snippet, source));
+        if (answer instanceof YodaAnswerItem) {
+            int snippetIDs[] = ((YodaAnswerItem) answer).getSnippetIDs();
+            for (int snippetId : snippetIDs) {
+                YodaSnippet snippet = (snippets.get(String.valueOf(snippetId)));
+                int sourceID = snippet.getSourceID();
+                YodaSource source = sources.get(String.valueOf(sourceID));
+                snippetTexts.add(new SnippetSourceContainer(snippet, source));
+            }
         }
         return snippetTexts;
     }

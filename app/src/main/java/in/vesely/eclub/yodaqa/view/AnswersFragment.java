@@ -1,38 +1,19 @@
 package in.vesely.eclub.yodaqa.view;
 
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
-
-import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import in.vesely.eclub.yodaqa.R;
 import in.vesely.eclub.yodaqa.adapters.ExpandableListAdapter;
 import in.vesely.eclub.yodaqa.adapters.ListRecyclerViewAdapter;
-import in.vesely.eclub.yodaqa.bus.OttoBus;
-import in.vesely.eclub.yodaqa.bus.ResponseChangedAction;
 import in.vesely.eclub.yodaqa.restclient.YodaAnswer;
 import in.vesely.eclub.yodaqa.restclient.YodaAnswersResponse;
-import in.vesely.eclub.yodaqa.restclient.YodaSnippet;
 
 
 @EFragment(R.layout.fragment_answers)
@@ -64,7 +45,7 @@ public class AnswersFragment extends ResponseFragment {
     protected void responseChanged(YodaAnswersResponse response) {
         expandableListAdapter.clear();
         if (response != null) {
-            expandableListAdapter.addAll(response.getAnswers(), response.getSnippets(), response.getSources());
+            expandableListAdapter.addAll(response.getAllAnswers(), response.getSnippets(), response.getSources());
         }
     }
 
@@ -73,24 +54,25 @@ public class AnswersFragment extends ResponseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
+
         expandableListAdapter = new ExpandableListAdapter(getActivity(), null, null);
         expListView.setAdapter(expandableListAdapter);
-        //TODO repair indicator to right
-        indicatorToRight();
+//        TODO repair indicator to right
+//        indicatorToRight();
     }
 
-    public void indicatorToRight() {
-        int drawable_width = 30;
-
-        if(android.os.Build.VERSION.SDK_INT <
-                android.os.Build.VERSION_CODES.JELLY_BEAN_MR2){
-            expListView.setIndicatorBounds(
-                    expListView.getWidth()-drawable_width,
-                    expListView.getWidth());
-        }else{
-            expListView.setIndicatorBoundsRelative(
-                    expListView.getWidth()-drawable_width,
-                    expListView.getWidth());
-        }
-    }
+//    public void indicatorToRight() {
+//        int drawable_width = 30;
+//
+//        if(android.os.Build.VERSION.SDK_INT <
+//                android.os.Build.VERSION_CODES.JELLY_BEAN_MR2){
+//            expListView.setIndicatorBounds(
+//                    expListView.getWidth()-drawable_width,
+//                    expListView.getWidth());
+//        }else{
+//            expListView.setIndicatorBoundsRelative(
+//                    expListView.getWidth()-drawable_width,
+//                    expListView.getWidth());
+//        }
+//    }
 }

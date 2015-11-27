@@ -4,8 +4,6 @@ import android.os.AsyncTask;
 
 import org.springframework.core.NestedRuntimeException;
 
-import java.util.Map;
-
 import in.vesely.eclub.yodaqa.bus.OttoBus;
 import in.vesely.eclub.yodaqa.bus.ResponseChangedAction;
 
@@ -15,12 +13,10 @@ import in.vesely.eclub.yodaqa.bus.ResponseChangedAction;
 public class YodaExecuter extends AsyncTask<String, YodaAnswersResponse, YodaAnswersResponse> {
     private OttoBus bus;
     private YodaRestClient restClient;
-    private Map<String, String> ids;
 
-    public YodaExecuter(OttoBus bus, YodaRestClient restClient, Map<String, String> ids) {
+    public YodaExecuter(OttoBus bus, YodaRestClient restClient) {
         this.bus = bus;
         this.restClient = restClient;
-        this.ids = ids;
     }
 
     @Override
@@ -33,17 +29,13 @@ public class YodaExecuter extends AsyncTask<String, YodaAnswersResponse, YodaAns
     protected YodaAnswersResponse doInBackground(String... params) {
         try {
             YodaUtils.setContentType(restClient);
-            String id = ids.get(params[0]);
-            if (id == null) {
-                String yodaPostAnswer= restClient.getId(YodaUtils.getQuestionPostData(params[0]));
-                yodaPostAnswer = yodaPostAnswer.replace("{", "");
-                yodaPostAnswer = yodaPostAnswer.replace("}", "");
-                yodaPostAnswer = yodaPostAnswer.replace("\"", "");
-                String delims = "[:]";
-                String[] split = yodaPostAnswer.split(delims);
-                id=split[1];
-                ids.put(params[0], id);
-            }
+            String yodaPostAnswer = restClient.getId(YodaUtils.getQuestionPostData(params[0]));
+            yodaPostAnswer = yodaPostAnswer.replace("{", "");
+            yodaPostAnswer = yodaPostAnswer.replace("}", "");
+            yodaPostAnswer = yodaPostAnswer.replace("\"", "");
+            String delims = "[:]";
+            String[] split = yodaPostAnswer.split(delims);
+            String id = split[1];
             YodaAnswersResponse response = null;
             while (true) {
                 response = restClient.getResponse(id);

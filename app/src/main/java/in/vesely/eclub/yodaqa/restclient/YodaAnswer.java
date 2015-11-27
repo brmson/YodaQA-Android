@@ -6,22 +6,21 @@ import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
-
 /**
- * Created by vesely on 6/15/15.
+ * Created by vesely on 11/27/15.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class YodaAnswer implements Parcelable {
 
     @JsonProperty("text")
-    private String text;
+    protected String text;
 
-    @JsonProperty("confidence")
-    private double confidence;
+    public YodaAnswer(String text) {
+        this.text = text;
+    }
 
-    @JsonProperty("snippetIDs")
-    private int[] snippetIDs;
+    public YodaAnswer() {
+    }
 
     public String getText() {
         return text;
@@ -31,43 +30,6 @@ public class YodaAnswer implements Parcelable {
         this.text = text;
     }
 
-    public double getConfidence() {
-        return confidence;
-    }
-
-    public int[] getSnippetIDs() {
-        return snippetIDs;
-    }
-
-    public void setConfidence(double confidence) {
-        this.confidence = confidence;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.text);
-        dest.writeDouble(this.confidence);
-        dest.writeIntArray(this.snippetIDs);
-    }
-
-    public YodaAnswer() {
-    }
-
-    public YodaAnswer(String text, double confidence) {
-        this.text = text;
-        this.confidence = confidence;
-    }
-
-    protected YodaAnswer(Parcel in) {
-        this.text = in.readString();
-        this.confidence = in.readDouble();
-        this.snippetIDs=in.createIntArray();
-    }
 
     public static final Parcelable.Creator<YodaAnswer> CREATOR = new Parcelable.Creator<YodaAnswer>() {
         public YodaAnswer createFromParcel(Parcel source) {
@@ -78,4 +40,18 @@ public class YodaAnswer implements Parcelable {
             return new YodaAnswer[size];
         }
     };
+
+    public YodaAnswer(Parcel source) {
+        text = source.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(text);
+    }
 }

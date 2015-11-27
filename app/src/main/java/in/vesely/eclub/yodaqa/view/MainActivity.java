@@ -11,10 +11,8 @@ import android.speech.tts.TextToSpeech;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ExpandableListView;
 
 import com.quinny898.library.persistentsearch.SearchBox;
 import com.quinny898.library.persistentsearch.SearchResult;
@@ -33,15 +31,11 @@ import org.androidannotations.annotations.rest.RestService;
 import org.springframework.http.client.OkHttpClientHttpRequestFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import in.vesely.eclub.yodaqa.R;
-import in.vesely.eclub.yodaqa.adapters.ExpandableListAdapter;
 import in.vesely.eclub.yodaqa.adapters.ResponseFragmentTabAdapter;
 import in.vesely.eclub.yodaqa.bus.OttoBus;
 import in.vesely.eclub.yodaqa.bus.RequestUpdateAction;
@@ -78,8 +72,6 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
 
     @Bean
     protected OttoBus bus;
-
-    private Map<String, String> ids = new HashMap<>();
 
     private final Object lock = new Object();
 
@@ -136,12 +128,12 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
         });
     }
 
-    private void setEndpoint(){
+    private void setEndpoint() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String settedEndpoint = sharedPref.getString("endpoint", "");
-        if (settedEndpoint.equals("Movies")){
+        if (settedEndpoint.equals("Movies")) {
             restClient.setRootUrl("http://qa.ailao.eu:4000/");
-        }else{
+        } else {
             restClient.setRootUrl("http://qa.ailao.eu/");
         }
     }
@@ -194,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
     public void onResponseChanged(ResponseChangedAction action) {
         response = action.getResponse();
         if (response != null && response.isFinished()) {
-            t1.speak(response.getAnswers().get(0).getText(), TextToSpeech.QUEUE_FLUSH, null);
+            t1.speak(response.getTextForSpokenAnswer(), TextToSpeech.QUEUE_FLUSH, null);
         }
     }
 
@@ -283,12 +275,10 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
                 executer.cancel(true);
             }
             response = null;
-            executer = new YodaExecuter(bus, restClient, ids);
+            executer = new YodaExecuter(bus, restClient);
             executer.execute(term);
         }
     }
-
-
 
 
     @Override
@@ -305,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
         switch (item.getItemId()) {
 
             case 1:
-                Intent intent=new Intent(this, SettingsActivity.class);
+                Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
 

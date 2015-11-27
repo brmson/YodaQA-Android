@@ -7,10 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import in.vesely.eclub.yodaqa.view.MainActivity_;
 
 /**
  * Created by vesely on 6/15/15.
@@ -19,7 +18,7 @@ import in.vesely.eclub.yodaqa.view.MainActivity_;
 public class YodaAnswersResponse implements Parcelable {
 
     @JsonProperty("answers")
-    private List<YodaAnswer> answers;
+    private List<YodaAnswerItem> answers;
 
     @JsonProperty("sources")
     private HashMap<String,YodaSource> sources;
@@ -36,22 +35,27 @@ public class YodaAnswersResponse implements Parcelable {
     @JsonProperty("gen_answers")
     private int generatedAnswers;
 
+    @JsonProperty("answerSentence")
+    private String answerSentence;
+
+    private List<YodaAnswer> answersAll;
+
     public YodaAnswersResponse() {
     }
 
-    public List<YodaAnswer> getAnswers() {
+    public List<YodaAnswerItem> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<YodaAnswer> answers) {
+    public void setAnswers(List<YodaAnswerItem> answers) {
         this.answers = answers;
     }
 
-    public HashMap<String,YodaSource> getSources() {
+    public HashMap<String, YodaSource> getSources() {
         return sources;
     }
 
-    public void setSources(HashMap<String,YodaSource> sources) {
+    public void setSources(HashMap<String, YodaSource> sources) {
         this.sources = sources;
     }
 
@@ -107,10 +111,14 @@ public class YodaAnswersResponse implements Parcelable {
         dest.writeByte(finished ? (byte) 1 : (byte) 0);
         dest.writeInt(this.generatedSources);
         dest.writeInt(this.generatedAnswers);
+        dest.writeByte(answerSentence == null ? (byte) 1 : (byte) 0);
+        if (answerSentence != null) {
+            dest.writeString(answerSentence);
+        }
     }
 
     protected YodaAnswersResponse(Parcel in) {
-        this.answers = in.createTypedArrayList(YodaAnswer.CREATOR);
+        this.answers = in.createTypedArrayList(YodaAnswerItem.CREATOR);
         //this.sources = in.(YodaSource.CREATOR);
 
         int size = in.readInt();
@@ -130,6 +138,40 @@ public class YodaAnswersResponse implements Parcelable {
         this.finished = in.readByte() != 0;
         this.generatedSources = in.readInt();
         this.generatedAnswers = in.readInt();
+        boolean isAbsent = in.readByte() != 0;
+        if (!isAbsent) {
+            this.answerSentence = in.readString();
+        }
+    }
+
+    public String getTextForSpokenAnswer() {
+        if (answerSentence != null) {
+            return answerSentence;
+        }
+        if (answers.size() > 0) {
+            return answers.get(0).getText();
+        }
+        return null;
+    }
+
+    public List<YodaAnswer> getAllAnswers() {
+        if (answersAll == null) {
+            answersAll = new LinkedList<>();
+            String answerSentence = getAnswerSentence();
+            if (answerSentence != null) {
+                answersAll.add(new YodaAnswer(answerSentence));
+            }
+            answersAll.addAll(getAnswers());
+        }
+        return answersAll;
+    }
+
+    public String getAnswerSentence() {
+        return answerSentence;
+    }
+
+    public void setAnswerSentence(String answerSentence) {
+        this.answerSentence = answerSentence;
     }
 
     public static final Creator<YodaAnswersResponse> CREATOR = new Creator<YodaAnswersResponse>() {

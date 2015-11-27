@@ -23,10 +23,10 @@
         <activity android:name=".view.SettingsActivity"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:label="@string/settings">
-            <intent-filer>
+            <intent-filter>
                 <action android:name=".Preferences" />
                 <category android:name="android.intent.category.PREFERENCE" />
-            </intent-filer>
+            </intent-filter>
         </activity>
     </application>
 

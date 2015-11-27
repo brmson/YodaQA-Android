@@ -10,6 +10,7 @@ import org.androidannotations.annotations.res.ColorRes;
 import in.vesely.eclub.yodaqa.R;
 import in.vesely.eclub.yodaqa.adapters.BindableLinearLayout;
 import in.vesely.eclub.yodaqa.restclient.YodaAnswer;
+import in.vesely.eclub.yodaqa.restclient.YodaAnswerItem;
 import in.vesely.eclub.yodaqa.utils.ColorUtils;
 
 /**
@@ -37,7 +38,13 @@ public class AnswerItem extends BindableLinearLayout<YodaAnswer> {
     @Override
     public void bind(YodaAnswer data, int pos) {
         text.setText(data.getText());
-        confidence.setText(String.format("%3.1f %%", data.getConfidence() * 100));
-        confidence.setTextColor(ColorUtils.interpolate(accColor, accDarkColor, (float) data.getConfidence()));
+        if (data instanceof YodaAnswerItem) {
+            YodaAnswerItem d = (YodaAnswerItem) data;
+            confidence.setVisibility(VISIBLE);
+            confidence.setText(String.format("%3.1f %%", d.getConfidence() * 100));
+            confidence.setTextColor(ColorUtils.interpolate(accColor, accDarkColor, (float) d.getConfidence()));
+        } else {
+            confidence.setVisibility(INVISIBLE);
+        }
     }
 }
