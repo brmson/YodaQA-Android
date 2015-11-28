@@ -11,8 +11,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 
 import com.quinny898.library.persistentsearch.SearchBox;
 import com.quinny898.library.persistentsearch.SearchResult;
@@ -24,6 +23,8 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.NonConfigurationInstance;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.Transactional;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.DrawableRes;
@@ -48,9 +49,11 @@ import in.vesely.eclub.yodaqa.restclient.YodaExecuter;
 import in.vesely.eclub.yodaqa.restclient.YodaRestClient;
 
 @EActivity(R.layout.activity_main)
+@OptionsMenu(R.menu.main)
 public class MainActivity extends AppCompatActivity implements SearchBox.SearchListener {
 
     private static final String RESPONSE_STATE = "response_state";
+    private static final String TAG = "MainActivity";
 
     @ViewById(R.id.tabLayout)
     protected TabLayout tabLayout;
@@ -75,16 +78,13 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
 
     private final Object lock = new Object();
 
-    TextToSpeech t1;
-
-    private int group1Id = 1;
-
-    private int settingsId = Menu.FIRST;
+    private TextToSpeech t1;
 
     @NonConfigurationInstance
     protected YodaExecuter executer;
     private DBHelper dbHelper;
     private YodaAnswersResponse response;
+    private boolean searchOpened;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -149,6 +149,15 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
         pager.setAdapter(adapter);
         tabLayout.setTabsFromPagerAdapter(adapter);
         search.enableVoiceRecognition(this);
+        search.setMenuListener(new SearchBox.MenuListener() {
+            @Override
+            public void onMenuClick() {
+                if (!searchOpened) {
+                    Log.d(TAG, "Search bar menu clicked -> opening.");
+                    search.toggleSearch();
+                }
+            }
+        });
         search.setSearchListener(this);
         search.setLogoText(getString(R.string.enter_something));
         loadResults();
@@ -228,7 +237,8 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
 
     @Override
     public void onSearchOpened() {
-
+        searchOpened = true;
+        Log.d(TAG, "Search opened.");
     }
 
     @Override
@@ -238,7 +248,8 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
 
     @Override
     public void onSearchClosed() {
-
+        searchOpened = false;
+        Log.d(TAG, "Search closed.");
     }
 
     @Override
@@ -280,29 +291,23 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
         }
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        menu.add(group1Id, settingsId, settingsId, R.string.settings);
-
-        return super.onCreateOptionsMenu(menu);
+    public void onBackPressed() {
+        if (searchOpened) {
+            search.toggleSearch();
+        } else {
+            super.onBackPressed();
+        }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @OptionsItem(R.id.menu_settings)
+    public void onSettingsMenuItemClicked() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
 
-        switch (item.getItemId()) {
-
-            case 1:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-
-            default:
-                break;
-
-        }
-        return super.onOptionsItemSelected(item);
+    @OptionsItem(R.id.menu_report_error)
+    public void onReportErrorMenuItemClicked() {
+        new ReportDialogFragment().show(getFragmentManager(), "dialog");
     }
 }

@@ -22,4 +22,10 @@
     <string name="pref_acra_user_email_summary">We may contact you to obtain more information about errors</string>
     <string name="pref_acra_alwaysaccept">Auto-send reports</string>
     <string name="pref_acra_alwaysaccept_enabled">Check to auto-send reports on crash events</string>
+    <string name="report_error">Report error</string>
+    <string name="describe_problem">Describe problem:</string>
+    <string name="describe_problem_prefill" />
+    <string name="cancel">Cancel</string>
+    <string name="send">Send</string>
+    <string name="thank_you_feedback">Thank you !</string>
 </resources>
