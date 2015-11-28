@@ -73,3 +73,7 @@
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
 }
+
+-keepattributes SourceFile,LineNumberTable
+
+-keep class org.acra.** { *; }

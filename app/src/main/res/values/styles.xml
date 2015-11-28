@@ -21,12 +21,12 @@
 
     </style>
 
-
-    <style name="ToolBarStyle.Theme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="AcraTheme" parent="AppTheme">
+        <item name="android:dialogTheme">@style/AcraDialogStyle</item>
+        <item name="android:alertDialogTheme">@style/AcraDialogStyle</item>
     </style>
 
-    <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
-    </style>
+    <style name="ToolBarStyle.Theme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar"></style>
 
     <style name="MyDialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/myPrimaryColor</item>
@@ -36,6 +36,10 @@
         <item name="android:textColor">@color/myTextPrimaryColor</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:background">@color/myWindowBackground</item>
+    </style>
+
+    <style name="AcraDialogStyle" parent="MyDialogStyle">
+        <item name="android:layout_margin">@dimen/margin_dialog</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">

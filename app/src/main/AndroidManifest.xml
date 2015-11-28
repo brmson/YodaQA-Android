@@ -3,13 +3,16 @@
     package="in.vesely.eclub.yodaqa" >
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:name=".YodaApplication">
+
         <activity
             android:name=".view.MainActivity_"
             android:label="@string/app_name" >
@@ -28,6 +31,14 @@
                 <category android:name="android.intent.category.PREFERENCE" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="org.acra.CrashReportDialog"
+            android:theme="@style/AcraTheme"
+            android:process=":error_report"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="true" />
     </application>
 
 </manifest>

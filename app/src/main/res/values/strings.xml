@@ -9,4 +9,17 @@
     <string name="settings">Settings</string>
     <string name="domain">Domain</string>
     <string name="pref_endpoint_default">Live</string>
+
+    <string name="crash_dialog_title">YodaQA has crashed</string>
+    <string name="crash_dialog_text">An unexpected error occurred. Please help us fix this by sending us error data,
+    all you have to do is click OK.</string>
+    <string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
+    <string name="crash_dialog_ok_toast">Thank you !</string>
+
+    <string name="pref_enable_acra">Send reports</string>
+    <string name="pref_acra_enabled">Check to allow send reports in order to help us improve YodaQA</string>
+    <string name="pref_acra_user_email">Contact email</string>
+    <string name="pref_acra_user_email_summary">We may contact you to obtain more information about errors</string>
+    <string name="pref_acra_alwaysaccept">Auto-send reports</string>
+    <string name="pref_acra_alwaysaccept_enabled">Check to auto-send reports on crash events</string>
 </resources>

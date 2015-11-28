@@ -54,7 +54,6 @@ public class AnswersFragment extends ResponseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
-
         expandableListAdapter = new ExpandableListAdapter(getActivity(), null, null);
         expListView.setAdapter(expandableListAdapter);
 //        TODO repair indicator to right

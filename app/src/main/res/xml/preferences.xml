@@ -6,4 +6,21 @@
             android:key="endpoint"
             android:entries="@array/endpointArray"
             android:entryValues="@array/endpointValues" />
+
+    <CheckBoxPreference
+        android:key="acra.enable"
+        android:title="@string/pref_enable_acra"
+        android:summary="@string/pref_acra_enabled"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:key="acra.alwaysaccept"
+        android:title="@string/pref_acra_alwaysaccept"
+        android:summary="@string/pref_acra_alwaysaccept_enabled"
+        android:defaultValue="false" />
+
+    <EditTextPreference
+        android:key="acra.user.email"
+        android:title="@string/pref_acra_user_email"
+        android:summary="@string/pref_acra_user_email_summary" />
 </PreferenceScreen>
