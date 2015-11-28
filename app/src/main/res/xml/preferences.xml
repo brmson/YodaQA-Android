@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/yoda_settings">
         <ListPreference
             android:title="@string/domain"
             android:defaultValue="@string/pref_endpoint_default"
             android:key="endpoint"
             android:entries="@array/endpointArray"
             android:entryValues="@array/endpointValues" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/acra_settings_title">
+
 
     <CheckBoxPreference
         android:key="acra.enable"
@@ -23,4 +29,5 @@
         android:key="acra.user.email"
         android:title="@string/pref_acra_user_email"
         android:summary="@string/pref_acra_user_email_summary" />
+    </PreferenceCategory>
 </PreferenceScreen>

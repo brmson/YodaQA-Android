@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import in.vesely.eclub.yodaqa.R;
-import in.vesely.eclub.yodaqa.SnippetSourceContainer;
+import in.vesely.eclub.yodaqa.restclient.SnippetSourceContainer;
 import in.vesely.eclub.yodaqa.restclient.YodaAnswer;
 import in.vesely.eclub.yodaqa.restclient.YodaAnswerItem;
 import in.vesely.eclub.yodaqa.restclient.YodaSnippet;

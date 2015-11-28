@@ -1,7 +1,4 @@
-package in.vesely.eclub.yodaqa;
-
-import in.vesely.eclub.yodaqa.restclient.YodaSnippet;
-import in.vesely.eclub.yodaqa.restclient.YodaSource;
+package in.vesely.eclub.yodaqa.restclient;
 
 /**
  * Created by ERMRK on 7.8.2015.

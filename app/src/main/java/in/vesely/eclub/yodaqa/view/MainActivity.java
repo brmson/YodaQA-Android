@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
 
     @OptionsItem(R.id.menu_settings)
     public void onSettingsMenuItemClicked() {
-        Intent intent = new Intent(this, SettingsActivity.class);
+        Intent intent = new Intent(this, SettingsActivity_.class);
         startActivity(intent);
     }
 

@@ -28,4 +28,6 @@
     <string name="cancel">Cancel</string>
     <string name="send">Send</string>
     <string name="thank_you_feedback">Thank you !</string>
+    <string name="acra_settings_title">Error reporting</string>
+    <string name="yoda_settings">General</string>
 </resources>
