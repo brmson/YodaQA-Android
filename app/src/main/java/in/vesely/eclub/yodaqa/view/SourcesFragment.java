@@ -9,13 +9,12 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 
 import in.vesely.eclub.yodaqa.R;
 import in.vesely.eclub.yodaqa.adapters.ListRecyclerViewAdapter;
 import in.vesely.eclub.yodaqa.restclient.YodaAnswersResponse;
 import in.vesely.eclub.yodaqa.restclient.YodaSource;
+import in.vesely.eclub.yodaqa.view.utils.SimpleDividerItemDecoration;
 
 
 /**
@@ -70,5 +69,6 @@ public class SourcesFragment extends ResponseFragment {
     protected void afterViews() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
     }
 }

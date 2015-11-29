@@ -6,7 +6,7 @@ import android.view.View;
 /**
  * Created by vesely on 2/3/15.
  */
-public class ViewWrapper<T, V extends View & ViewWrapper.Binder<T>> extends RecyclerView.ViewHolder {
+public class ViewWrapper<T, V extends View & Binder<T>> extends RecyclerView.ViewHolder {
 
     private V view;
 
@@ -19,7 +19,5 @@ public class ViewWrapper<T, V extends View & ViewWrapper.Binder<T>> extends Recy
         return view;
     }
 
-    public interface Binder<T> {
-        void bind(T data, int position);
-    }
+
 }

@@ -1,77 +1,84 @@
 package in.vesely.eclub.yodaqa.view;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import in.vesely.eclub.yodaqa.R;
-import in.vesely.eclub.yodaqa.adapters.ExpandableListAdapter;
-import in.vesely.eclub.yodaqa.adapters.ListRecyclerViewAdapter;
+import in.vesely.eclub.yodaqa.adapters.AnswersExpandableRecyclerViewAdapter;
 import in.vesely.eclub.yodaqa.restclient.YodaAnswer;
 import in.vesely.eclub.yodaqa.restclient.YodaAnswersResponse;
+import in.vesely.eclub.yodaqa.view.utils.SimpleDividerItemDecoration;
 
 
 @EFragment(R.layout.fragment_answers)
 public class AnswersFragment extends ResponseFragment {
 
-
-
     @ViewById(R.id.recyclerView)
     protected RecyclerView recyclerView;
-    private ListRecyclerViewAdapter<YodaAnswer, AnswerItem> adapter = new ListRecyclerViewAdapter<YodaAnswer, AnswerItem>() {
-        @Override
-        protected AnswerItem onCreateItemView(ViewGroup parent, int viewType) {
-            return AnswerItem_.build(parent.getContext());
-        }
-    };
-
-
-    @ViewById(R.id.Expandable_list)
-    protected ExpandableListView expListView;
-
-
-    private ExpandableListAdapter expandableListAdapter;
+    protected List<YodaAnswer> answers;
+    private AnswersExpandableRecyclerViewAdapter adapter;
+    private Bundle savedData;
 
     public AnswersFragment() {
     }
 
-
     @Override
     protected void responseChanged(YodaAnswersResponse response) {
-        expandableListAdapter.clear();
-        if (response != null) {
-            expandableListAdapter.addAll(response.getAllAnswers(), response.getSnippets(), response.getSources());
+        if (response == null) {
+            adapter.clearAll();
+            return;
+        }
+        List<YodaAnswer> newAnswers = response.getAllAnswers();
+        int i;
+        for (i = 0; i < answers.size() && i < newAnswers.size(); i++) {
+            answers.set(i, newAnswers.get(i));
+            adapter.notifyParentItemChanged(i);
+        }
+        if (i < answers.size())/*newAnswers has less items*/ {
+            for (int j = answers.size() - 1; j >= i; j--) {
+                answers.remove(j);
+                adapter.notifyParentItemRemoved(j);
+            }
+        } else if (i < newAnswers.size())/*newAnswers has more items*/ {
+            for (int j = i; j < newAnswers.size(); j++) {
+                answers.add(newAnswers.get(j));
+                adapter.notifyParentItemInserted(j);
+            }
+        }
+        if (savedData != null) {
+            adapter.onRestoreInstanceState(savedData);
+            savedData = null;
         }
     }
 
     @AfterViews
     protected void afterViews() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
+        answers = new ArrayList<>();
+        adapter = new AnswersExpandableRecyclerViewAdapter(answers);
         recyclerView.setAdapter(adapter);
-
-        expandableListAdapter = new ExpandableListAdapter(getActivity(), null, null);
-        expListView.setAdapter(expandableListAdapter);
-//        TODO repair indicator to right
-//        indicatorToRight();
     }
 
-//    public void indicatorToRight() {
-//        int drawable_width = 30;
-//
-//        if(android.os.Build.VERSION.SDK_INT <
-//                android.os.Build.VERSION_CODES.JELLY_BEAN_MR2){
-//            expListView.setIndicatorBounds(
-//                    expListView.getWidth()-drawable_width,
-//                    expListView.getWidth());
-//        }else{
-//            expListView.setIndicatorBoundsRelative(
-//                    expListView.getWidth()-drawable_width,
-//                    expListView.getWidth());
-//        }
-//    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        savedData = savedInstanceState;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (!refreshLayout.isRefreshing()) {
+            adapter.onSaveInstanceState(outState);
+        }
+    }
 }

@@ -15,14 +15,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <ExpandableListView
-        android:id="@+id/Expandable_list"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:groupIndicator="@android:color/transparent"
-        android:animateLayoutChanges="true">
-    </ExpandableListView>
 </RelativeLayout>

@@ -1,11 +1,11 @@
 package in.vesely.eclub.yodaqa.view;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
-import android.view.View;
-import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
@@ -29,7 +29,7 @@ import in.vesely.eclub.yodaqa.restclient.YodaAnswersResponse;
 public abstract class ResponseFragment extends Fragment {
 
     private static final String REFRESH_STATE = "refresh_state";
-    private Boolean refreshing = null;
+    protected Boolean refreshing = null;
 
     @FragmentArg
     @InstanceState
@@ -59,7 +59,12 @@ public abstract class ResponseFragment extends Fragment {
     @Subscribe
     public void setResponse(ResponseChangedAction action) {
         response = action.getResponse();
-        responseChanged(response);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                responseChanged(response);
+            }
+        });
         if (refreshLayout != null && response != null) {
             refreshLayout.setRefreshing(!response.isFinished());
         }

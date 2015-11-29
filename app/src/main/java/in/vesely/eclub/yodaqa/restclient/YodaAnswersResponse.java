@@ -21,10 +21,10 @@ public class YodaAnswersResponse implements Parcelable {
     private List<YodaAnswerItem> answers;
 
     @JsonProperty("sources")
-    private HashMap<String,YodaSource> sources;
+    private HashMap<String, YodaSource> sources;
 
     @JsonProperty("snippets")
-    private HashMap<String,YodaSnippet>snippets;
+    private HashMap<String, YodaSnippet> snippets;
 
     @JsonProperty("finished")
     private boolean finished;
@@ -97,15 +97,15 @@ public class YodaAnswersResponse implements Parcelable {
         dest.writeTypedList(answers);
 
         dest.writeInt(sources.size());
-        for(Map.Entry<String,YodaSource> entry : sources.entrySet()){
+        for (Map.Entry<String, YodaSource> entry : sources.entrySet()) {
             dest.writeString(entry.getKey());
             dest.writeParcelable(entry.getValue(), flags);
         }
 
         dest.writeInt(snippets.size());
-        for(Map.Entry<String,YodaSnippet> entry:snippets.entrySet()){
+        for (Map.Entry<String, YodaSnippet> entry : snippets.entrySet()) {
             dest.writeString(entry.getKey());
-            dest.writeParcelable(entry.getValue(),flags);
+            dest.writeParcelable(entry.getValue(), flags);
         }
 
         dest.writeByte(finished ? (byte) 1 : (byte) 0);
@@ -122,17 +122,17 @@ public class YodaAnswersResponse implements Parcelable {
         //this.sources = in.(YodaSource.CREATOR);
 
         int size = in.readInt();
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             String key = in.readString();
             YodaSource value = in.readParcelable(null);
-            sources.put(key,value);
+            sources.put(key, value);
         }
 
-        size=in.readInt();
-        for(int i=0; i<size; i++){
-            String key= in.readString();
-            YodaSnippet value=in.readParcelable(null);
-            snippets.put(key,value);
+        size = in.readInt();
+        for (int i = 0; i < size; i++) {
+            String key = in.readString();
+            YodaSnippet value = in.readParcelable(null);
+            snippets.put(key, value);
         }
 
         this.finished = in.readByte() != 0;
@@ -161,7 +161,16 @@ public class YodaAnswersResponse implements Parcelable {
             if (answerSentence != null) {
                 answersAll.add(new YodaAnswer(answerSentence));
             }
-            answersAll.addAll(getAnswers());
+            for (YodaAnswerItem a : getAnswers()) {
+                int snippetIDs[] = a.getSnippetIDs();
+                for (int snippetId : snippetIDs) {
+                    YodaSnippet snippet = (snippets.get(String.valueOf(snippetId)));
+                    int sourceID = snippet.getSourceID();
+                    YodaSource source = sources.get(String.valueOf(sourceID));
+                    a.addSnippet(new SnippetSourceContainer(snippet, source));
+                }
+                answersAll.add(a);
+            }
         }
         return answersAll;
     }

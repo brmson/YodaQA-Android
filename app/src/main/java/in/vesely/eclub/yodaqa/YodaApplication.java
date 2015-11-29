@@ -32,7 +32,7 @@ import org.acra.sender.HttpSender;
         },
         mode = ReportingInteractionMode.DIALOG,
         logcatFilterByPid = true,
-        logcatArguments = {"-t", "400", "-v", "time"},
+        logcatArguments = {"-t", "1000", "-v", "time"},
         resDialogTitle = R.string.crash_dialog_title,
         resDialogText = R.string.crash_dialog_text,
         resDialogIcon = 0,

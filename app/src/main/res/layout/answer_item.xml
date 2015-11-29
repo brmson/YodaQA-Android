@@ -2,14 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
-    android:paddingBottom="5dp"
-    android:paddingTop="15dp">
+    android:layout_height="wrap_content"
+    android:minHeight="72dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/confidence"
@@ -18,23 +21,24 @@
             android:gravity="center_vertical|end"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@color/black87"
+            android:layout_marginRight="16dp"
             android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/text"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:gravity="center_vertical"
             android:textColor="@color/black87"
             android:textSize="16sp"
+            android:textStyle="bold"
             android:ellipsize="end"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:paddingRight="16dp"
-            android:paddingLeft="16dp" />
+            android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/indicator"
+            android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical|end"
@@ -45,7 +49,9 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-8dp"
         android:id="@+id/progressBar"
-        android:progress="66" />
+        android:progress="66"
+        android:visibility="visible" />
 
 </LinearLayout>

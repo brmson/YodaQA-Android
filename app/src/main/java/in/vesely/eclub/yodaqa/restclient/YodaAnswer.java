@@ -3,14 +3,18 @@ package in.vesely.eclub.yodaqa.restclient;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by vesely on 11/27/15.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class YodaAnswer implements Parcelable {
+public class YodaAnswer implements Parcelable, ParentListItem {
 
     @JsonProperty("text")
     protected String text;
@@ -53,5 +57,15 @@ public class YodaAnswer implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(text);
+    }
+
+    @Override
+    public List<?> getChildItemList() {
+        return new LinkedList<>();
+    }
+
+    @Override
+    public boolean isInitiallyExpanded() {
+        return false;
     }
 }

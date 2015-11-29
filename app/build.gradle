@@ -58,6 +58,7 @@ dependencies {
         transitive = true
     }
     compile 'com.github.anrwatchdog:anrwatchdog:1.1.+'
+    compile 'com.bignerdranch.android:expandablerecyclerview:2.0.3'
     compile 'com.android.support:appcompat-v7:23.1.+'
     compile 'com.android.support:recyclerview-v7:23.1.+'
     compile 'com.android.support:design:23.1.+'

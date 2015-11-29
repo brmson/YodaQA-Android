@@ -6,6 +6,9 @@ import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by vesely on 6/15/15.
  */
@@ -17,6 +20,8 @@ public class YodaAnswerItem extends YodaAnswer {
 
     @JsonProperty("snippetIDs")
     private int[] snippetIDs;
+
+    private List<SnippetSourceContainer> snippets;
 
     public double getConfidence() {
         return confidence;
@@ -43,15 +48,18 @@ public class YodaAnswerItem extends YodaAnswer {
     }
 
     public YodaAnswerItem() {
+        snippets = new LinkedList<>();
     }
 
     public YodaAnswerItem(String text, double confidence) {
         super(text);
+        snippets = new LinkedList<>();
         this.confidence = confidence;
     }
 
     protected YodaAnswerItem(Parcel in) {
         super(in);
+        snippets = new LinkedList<>();
         this.confidence = in.readDouble();
         this.snippetIDs = in.createIntArray();
     }
@@ -65,4 +73,17 @@ public class YodaAnswerItem extends YodaAnswer {
             return new YodaAnswerItem[size];
         }
     };
+
+    public void addSnippet(SnippetSourceContainer snippet) {
+        snippets.add(snippet);
+    }
+
+    public List<SnippetSourceContainer> getSnippets() {
+        return snippets;
+    }
+
+    @Override
+    public List<SnippetSourceContainer> getChildItemList() {
+        return getSnippets();
+    }
 }
