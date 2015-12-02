@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by vesely on 2/3/15.
  */
-public abstract class ListRecyclerViewAdapter<T, V extends View & ViewWrapper.Binder<T>> extends RecyclerViewAdapterBase<T, V> {
+public abstract class ListRecyclerViewAdapter<T, V extends View & Binder<T>> extends RecyclerViewAdapterBase<T, V> {
 
     protected List<T> items = new ArrayList<T>();
 

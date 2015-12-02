@@ -50,7 +50,7 @@ import in.vesely.eclub.yodaqa.restclient.YodaRestClient;
 
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.main)
-public class MainActivity extends AppCompatActivity implements SearchBox.SearchListener {
+public class MainActivity extends AppCompatActivity implements SearchBox.SearchListener, TextToSpeech.OnInitListener {
 
     private static final String RESPONSE_STATE = "response_state";
     private static final String TAG = "MainActivity";
@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
     private DBHelper dbHelper;
     private YodaAnswersResponse response;
     private boolean searchOpened;
+    private static final int MY_DATA_CHECK_CODE = 131;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,40 +93,27 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         bus.register(this);
         dbHelper = new DBHelper(this);
-        initTextToSpeech();
+        Intent checkTTSIntent = new Intent();
+        checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
         setEndpoint();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        initTextToSpeech();
         setEndpoint();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        bus.unregister(this);
-    }
-
-    public void onPause() {
         if (t1 != null) {
             t1.stop();
             t1.shutdown();
+            t1 = null;
         }
-        super.onPause();
-    }
-
-    private void initTextToSpeech() {
-        t1 = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status != TextToSpeech.ERROR) {
-                    t1.setLanguage(Locale.UK);
-                }
-            }
-        });
+        bus.unregister(this);
     }
 
     private void setEndpoint() {
@@ -195,7 +183,11 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
     public void onResponseChanged(ResponseChangedAction action) {
         response = action.getResponse();
         if (response != null && response.isFinished()) {
-            t1.speak(response.getTextForSpokenAnswer(), TextToSpeech.QUEUE_FLUSH, null);
+            if (t1 != null) {
+                t1.speak(response.getTextForSpokenAnswer(), TextToSpeech.QUEUE_FLUSH, null);
+            } else {
+                Log.d(TAG, "TTS is not instantiated.");
+            }
         }
     }
 
@@ -206,14 +198,21 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
             ArrayList<String> best = new ArrayList<>();
             best.add(matches.get(0));
             search.populateEditText(best);
+        } else if (requestCode == MY_DATA_CHECK_CODE) {
+            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                t1 = new TextToSpeech(getApplicationContext(), this);
+            }
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
         //TODO Hack to force the search box voice recognition language to en-US. The code of the search box should be modified in the future to remove this hack.
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
+        if (requestCode == SearchBox.VOICE_RECOGNITION_CODE) {
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
+        }
 //        intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{});
         super.startActivityForResult(intent, requestCode, options);
     }
@@ -309,5 +308,23 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
     @OptionsItem(R.id.menu_report_error)
     public void onReportErrorMenuItemClicked() {
         new ReportDialogFragment().show(getFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void onInit(int status) {
+        Log.d(TAG, "Text to speech init " + status);
+        if (status == TextToSpeech.SUCCESS) {
+            int res;
+            if (t1.isLanguageAvailable(Locale.US) == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
+                res = t1.setLanguage(Locale.US);
+            } else {
+                res = t1.setLanguage(Locale.UK);
+            }
+            if (res == TextToSpeech.LANG_NOT_SUPPORTED || res == TextToSpeech.LANG_MISSING_DATA) {
+                Log.d(TAG, "Language not supported");
+            }
+        } else {
+            Log.d(TAG, "Text to speech init failed. " + status);
+        }
     }
 }
