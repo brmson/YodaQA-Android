@@ -36,6 +36,7 @@ public class AnswersFragment extends ResponseFragment {
             adapter.clearAll();
             return;
         }
+        adapter.setGlobalData(response.isFinished());
         List<YodaAnswer> newAnswers = response.getAllAnswers();
         int i;
         for (i = 0; i < answers.size() && i < newAnswers.size(); i++) {

@@ -13,15 +13,17 @@ import in.vesely.eclub.yodaqa.adapters.Binder;
 /**
  * Created by vesely on 11/29/15.
  */
-public abstract class BindableExpandableRecyclerViewAdapter<T, V extends View & ParentBinder<T>, T2, V2 extends View & Binder<T2>> extends ExpandableRecyclerAdapter<ParentViewWrapper<T, V>, ChildViewWrapper<T2, V2>> {
+public abstract class BindableExpandableRecyclerViewAdapter<B, T, V extends View & ParentBinder<T, B>, T2, V2 extends View & Binder<T2>> extends ExpandableRecyclerAdapter<ParentViewWrapper<B, T, V>, ChildViewWrapper<T2, V2>> {
+
+    private B globalData;
 
     public BindableExpandableRecyclerViewAdapter(List<? extends ParentListItem> parentItemList) {
         super(parentItemList);
     }
 
     @Override
-    public ParentViewWrapper<T, V> onCreateParentViewHolder(ViewGroup parentViewGroup) {
-        return new ParentViewWrapper<T, V>(onCreateParentItemView(parentViewGroup));
+    public ParentViewWrapper<B, T, V> onCreateParentViewHolder(ViewGroup parentViewGroup) {
+        return new ParentViewWrapper<B, T, V>(onCreateParentItemView(parentViewGroup));
     }
 
     @Override
@@ -35,13 +37,21 @@ public abstract class BindableExpandableRecyclerViewAdapter<T, V extends View & 
 
     @Override
     @SuppressWarnings("unchecked")
-    public void onBindParentViewHolder(ParentViewWrapper<T, V> parentViewHolder, int position, ParentListItem parentListItem) {
-        parentViewHolder.getView().bind((T) parentListItem, position, parentViewHolder.isExpanded());
+    public void onBindParentViewHolder(ParentViewWrapper<B, T, V> parentViewHolder, int position, ParentListItem parentListItem) {
+        parentViewHolder.getView().bind((T) parentListItem, position, parentViewHolder.isExpanded(), globalData);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public void onBindChildViewHolder(ChildViewWrapper<T2, V2> childViewHolder, int position, Object childListItem) {
         childViewHolder.getView().bind((T2) childListItem, position);
+    }
+
+    public B getGlobalData() {
+        return globalData;
+    }
+
+    public void setGlobalData(B globalData) {
+        this.globalData = globalData;
     }
 }

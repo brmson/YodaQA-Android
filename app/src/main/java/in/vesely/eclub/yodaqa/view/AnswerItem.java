@@ -23,7 +23,7 @@ import in.vesely.eclub.yodaqa.utils.ColorUtils;
  * Created by vesely on 6/16/15.
  */
 @EViewGroup(R.layout.answer_item)
-public class AnswerItem extends ParentBindableLinearLayout<YodaAnswer> {
+public class AnswerItem extends ParentBindableLinearLayout<YodaAnswer, Boolean> {
 
     @ViewById(R.id.text)
     protected TextView text;
@@ -57,7 +57,7 @@ public class AnswerItem extends ParentBindableLinearLayout<YodaAnswer> {
     }
 
     @Override
-    public void bind(YodaAnswer data, int position, boolean isExpanded) {
+    public void bind(YodaAnswer data, int position, boolean isExpanded, Boolean shouldAnimate) {
         text.setText(data.getText());
         indicator.setVisibility(data.getChildItemList().size() == 0 ? View.INVISIBLE : View.VISIBLE);
         indicator.setRotation(isExpanded ? 180 : 0);
@@ -69,9 +69,13 @@ public class AnswerItem extends ParentBindableLinearLayout<YodaAnswer> {
             if (animator != null) {
                 animator.cancel();
             }
-            if (animate) {
-                animate((float) d.getConfidence());
+            if (animate && shouldAnimate) {
                 animate = false;
+                if (d.getConfidence() > 0.03) {
+                    animate((float) d.getConfidence());
+                } else {
+                    setWithoutAnimation((float) d.getConfidence());
+                }
             } else {
                 setWithoutAnimation((float) d.getConfidence());
             }
@@ -91,7 +95,7 @@ public class AnswerItem extends ParentBindableLinearLayout<YodaAnswer> {
     private void animate(final float confVal) {
         setWithoutAnimation(0);
         animator = ValueAnimator.ofFloat(confVal * 100);
-        animator.setDuration(700);
+        animator.setDuration((long) (1000 * confVal));
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {

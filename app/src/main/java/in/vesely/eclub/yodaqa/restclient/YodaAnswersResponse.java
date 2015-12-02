@@ -124,14 +124,14 @@ public class YodaAnswersResponse implements Parcelable {
         int size = in.readInt();
         for (int i = 0; i < size; i++) {
             String key = in.readString();
-            YodaSource value = in.readParcelable(null);
+            YodaSource value = in.readParcelable(YodaSource.class.getClassLoader());
             sources.put(key, value);
         }
 
         size = in.readInt();
         for (int i = 0; i < size; i++) {
             String key = in.readString();
-            YodaSnippet value = in.readParcelable(null);
+            YodaSnippet value = in.readParcelable(YodaSource.class.getClassLoader());
             snippets.put(key, value);
         }
 

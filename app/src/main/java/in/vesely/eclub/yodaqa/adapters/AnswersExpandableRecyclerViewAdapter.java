@@ -17,7 +17,7 @@ import in.vesely.eclub.yodaqa.view.SnippetItem_;
 /**
  * Created by vesely on 11/29/15.
  */
-public class AnswersExpandableRecyclerViewAdapter extends BindableExpandableRecyclerViewAdapter<YodaAnswer, AnswerItem, SnippetSourceContainer, SnippetItem> {
+public class AnswersExpandableRecyclerViewAdapter extends BindableExpandableRecyclerViewAdapter<Boolean, YodaAnswer, AnswerItem, SnippetSourceContainer, SnippetItem> {
     public AnswersExpandableRecyclerViewAdapter(List<? extends ParentListItem> parentItemList) {
         super(parentItemList);
     }

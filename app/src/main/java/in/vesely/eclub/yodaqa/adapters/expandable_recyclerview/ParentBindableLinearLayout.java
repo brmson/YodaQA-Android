@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 /**
  * Created by vesely on 2/3/15.
  */
-public abstract class ParentBindableLinearLayout<T> extends LinearLayout implements ParentBinder<T> {
+public abstract class ParentBindableLinearLayout<T, B> extends LinearLayout implements ParentBinder<T, B> {
     public ParentBindableLinearLayout(Context context) {
         super(context);
         setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));

@@ -7,7 +7,7 @@ import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 /**
  * Created by vesely on 11/29/15.
  */
-public class ParentViewWrapper<T, V extends View & ParentBinder<T>> extends ParentViewHolder {
+public class ParentViewWrapper<B, T, V extends View & ParentBinder<T, B>> extends ParentViewHolder {
 
     private V view;
 
