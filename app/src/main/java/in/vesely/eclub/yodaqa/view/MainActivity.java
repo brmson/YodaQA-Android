@@ -210,12 +210,22 @@ public class MainActivity extends AppCompatActivity implements SearchBox.SearchL
     @Override
     public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
         //TODO Hack to force the search box voice recognition language to en-US. The code of the search box should be modified in the future to remove this hack.
+        forceSpeechRecognitionLanguage(intent, requestCode);
+        super.startActivityForResult(intent, requestCode, options);
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        //TODO Hack to force the search box voice recognition language to en-US. The code of the search box should be modified in the future to remove this hack.
+        forceSpeechRecognitionLanguage(intent, requestCode);
+        super.startActivityForResult(intent, requestCode);
+    }
+
+    private void forceSpeechRecognitionLanguage(Intent intent, int requestCode) {
         if (requestCode == SearchBox.VOICE_RECOGNITION_CODE) {
             Log.d(TAG, "Recognition language: " + Locale.US.toString());
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.US.toString());
         }
-//        intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{});
-        super.startActivityForResult(intent, requestCode, options);
     }
 
     @Override
