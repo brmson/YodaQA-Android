@@ -119,7 +119,8 @@ public class YodaAnswersResponse implements Parcelable {
 
     protected YodaAnswersResponse(Parcel in) {
         this.answers = in.createTypedArrayList(YodaAnswerItem.CREATOR);
-        //this.sources = in.(YodaSource.CREATOR);
+        this.sources = new HashMap<>();
+        this.snippets = new HashMap<>();
 
         int size = in.readInt();
         for (int i = 0; i < size; i++) {
